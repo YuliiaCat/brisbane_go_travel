@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Platform, StyleSheet} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import React from 'react';
+import { StyleSheet, View} from 'react-native';
+import { Calendar } from 'react-native-calendars';
 import { colors } from '../../constants/colors';
 
 interface DatePickerProps {
@@ -9,57 +9,45 @@ interface DatePickerProps {
 }
 
 const DatePickerComponent: React.FC<DatePickerProps> = ({ date, onChange }) => {
-  const [tempDate, setTempDate] = useState<Date | null>(null);
-
-  const parsedDate = date
-    ? new Date(Date.UTC(
-        parseInt(date.split('-')[0], 10),
-        parseInt(date.split('-')[1], 10) - 1,
-        parseInt(date.split('-')[2], 10)
-      ))
-    : new Date();
-
-    const [selectedDate, setSelectedDate] = useState<Date>(parsedDate);
-
-  const handleChange = (event: any, pickedDate?: Date) => {
-    if (pickedDate) {
-      setTempDate(pickedDate);
-    }
-  };
-
-  const handleConfirm = (pickedDate?: Date) => {
-    if (pickedDate || tempDate) {
-      const finalDate = pickedDate || tempDate!;
-      const formattedDate = `${finalDate.getFullYear()}-${(finalDate.getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}-${finalDate.getDate().toString().padStart(2, '0')}`;
-
-      onChange(formattedDate);
-      setSelectedDate(finalDate);
-      setTempDate(null);
-    }
-  };
 
   return (
-      <DateTimePicker
-        value={tempDate || selectedDate}
-        mode="date"
-        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-        onChange={handleChange}
-        onTouchEnd={() => handleConfirm()}
-        textColor={colors.gold}
-        style={styles.container}
-        minimumDate={new Date(2025, 0, 1)}
+    <View style={styles.container}>
+      <Calendar
+        current={date}
+        onDayPress={(day) => {
+          onChange(day.dateString);
+        }}
+        minDate={'2025-01-01'}
+        markedDates={{
+          [date]: {
+            selected: true,
+            selectedColor: colors.gold,
+            selectedTextColor: '#fff',
+          },
+        }}
+        theme={{
+          selectedDayBackgroundColor: colors.gold,
+          selectedDayTextColor: '#fff',
+          todayTextColor: colors.gold,
+          arrowColor: colors.gold,
+          textMonthFontWeight: 'bold',
+          textDayFontSize: 16,
+          textMonthFontSize: 18,
+          textDayHeaderFontSize: 14,
+        }}
       />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     borderRadius: 12,
     borderWidth: 2,
     borderColor: colors.gold,
     alignSelf: 'center',
+    padding: 5,
   },
 });
 

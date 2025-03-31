@@ -1,6 +1,6 @@
 import { Keyboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../constants/colors';
-import { DatePickerComponent, SharedButton, SharedText, TimePickerComponent, TitleBlock } from '../shared';
+import { DatePickerComponent, SharedButton, SharedText, TitleBlock } from '../shared';
 import { buttonStyle, buttonStyleDisabled } from '../../utils/styles';
 import SharedInput from '../shared/SharedInput';
 import IUserEvent from '../../types/userEvent';
@@ -20,8 +20,7 @@ const AddEventScreen = () => {
   const addEvent = useEventsStore(state => state.addEvent);
   const isDisabled = !formData.name || !formData.date || !formData.time || !formData.description;
   const navigation = useNavigation<NativeStackNavigationProp<EventsStackType>>();
-    const [showDate, setShowDate] = useState(false);
-    const [showTime, setShowTime] = useState(false);
+  const [showDate, setShowDate] = useState(false);
 
   const handleInputChange = (key: keyof IUserEvent, value: string) => {
     setFormData((prev) => ({
@@ -88,22 +87,12 @@ const AddEventScreen = () => {
             <SharedInput
               label="Start time"
               placeholder="HH:MM"
+              keyboardType="numeric"
+              maxLength={5}
               value={formData.time ?? ''}
               onChange={(value) => handleInputChange('time', value)}
-              onPress={() => setShowTime(!showTime)}
-              editable={false}
               isTime
             />
-
-            {showTime && (
-              <TimePickerComponent
-                time={formData.time || ''}
-                onChange={(newTime) => {
-                  handleInputChange('time', newTime);
-                  setShowTime(false);
-                }}
-              />
-            )}
           </View>
           <SharedButton
             style={!isDisabled ? buttonStyle : buttonStyleDisabled}

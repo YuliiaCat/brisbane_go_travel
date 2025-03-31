@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import {StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native';
+import {KeyboardTypeOptions, StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native';
 import SharedText from './SharedText';
 import { colors } from '../../constants/colors';
 import { useState } from 'react';
@@ -17,6 +17,8 @@ interface ISharedInput {
   isTime?: boolean;
   onPress?: () => void;
   isGame?: boolean;
+  keyboardType?: KeyboardTypeOptions,
+  maxLength?: number,
 }
 
 const SharedInput: React.FC<ISharedInput> = ({
@@ -30,6 +32,8 @@ const SharedInput: React.FC<ISharedInput> = ({
   isTime,
   onPress,
   isGame,
+  keyboardType,
+  maxLength,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const hasValue = value.trim().length > 0;
@@ -51,6 +55,8 @@ const SharedInput: React.FC<ISharedInput> = ({
           (isDate || isTime) && { paddingLeft: 44 },
         ]}
         editable={editable}
+        keyboardType={keyboardType}
+        maxLength={maxLength}
         onPress={onPress}
       />
       {isDate && <View style={styles.dateIcon}><DateIcon /></View>}

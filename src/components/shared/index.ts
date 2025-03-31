@@ -7,7 +7,6 @@ import SharedCard from './SharedCard';
 import TitleBlock from './TitleBlock';
 import Dot from './Dot';
 import DatePickerComponent from './DatePickerComponent';
-import TimePickerComponent from './TimePickerComponent';
 import CardsList from './CardsList';
 import LinearGradientComponent from './LinearGradientComponent';
 
@@ -21,7 +20,6 @@ export {
   TitleBlock,
   Dot,
   DatePickerComponent,
-  TimePickerComponent,
   CardsList,
   LinearGradientComponent,
 };

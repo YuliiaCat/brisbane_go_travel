@@ -6,7 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { EventsStackType } from '../../navigation/types';
 import React, { useState } from 'react';
 import IUserEvent from '../../types/userEvent';
-import { DatePickerComponent, SharedButton, SharedText, TimePickerComponent, TitleBlock } from '../shared';
+import { DatePickerComponent, SharedButton, SharedText, TitleBlock } from '../shared';
 import SharedInput from '../shared/SharedInput';
 import { buttonStyle } from '../../utils/styles';
 
@@ -23,7 +23,6 @@ const EditEventScreen = () => {
   const updateEvent = useEventsStore(state => state.updateEvent);
   const navigation = useNavigation<NativeStackNavigationProp<EventsStackType>>();
   const [showDate, setShowDate] = useState(false);
-  const [showTime, setShowTime] = useState(false);
 
   const handleInputChange = (key: keyof IUserEvent, value: string) => {
     setFormData((prev) => ({
@@ -91,20 +90,10 @@ const EditEventScreen = () => {
               placeholder="HH:MM"
               value={formData.time ?? ''}
               onChange={(value) => handleInputChange('time', value)}
-              onPress={() => setShowTime(!showTime)}
-              editable={false}
+              keyboardType="numeric"
+              maxLength={5}
               isTime
             />
-
-            {showTime && (
-              <TimePickerComponent
-                time={formData.time || ''}
-                onChange={(newTime) => {
-                  handleInputChange('time', newTime);
-                  setShowTime(false);
-                }}
-              />
-            )}
 
           </View>
           <SharedButton

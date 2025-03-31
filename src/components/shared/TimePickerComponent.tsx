@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Platform, StyleSheet } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { colors } from '../../constants/colors';
 
 interface TimePickerProps {
