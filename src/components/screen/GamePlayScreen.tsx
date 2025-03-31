@@ -22,18 +22,21 @@ const GamePlayScreen = () => {
   const { score, bestAttempt, updateScore, addMistake, resetGame } = useGameStore();
   const isDisabled = value.length === 0;
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const hasResetRef = useRef(false);
 
   useEffect(() => {
-    if (timeLeft === 0) {
-      navigation.navigate('GAME_SCORE_SCREEN', {
-        isGameOver: score <= bestAttempt,
-        score,
-      });
+    if (timeLeft === 0 && !hasResetRef.current) {
+    hasResetRef.current = true;
 
-      setTimeout(() => {
-        resetGame(score, totalTime - timeLeft);
-      }, 100);
-    }
+    navigation.navigate('GAME_SCORE_SCREEN', {
+      isGameOver: score <= bestAttempt,
+      score,
+    });
+
+    setTimeout(() => {
+      resetGame(score, totalTime);
+    }, 100);
+  }
 
     timerRef.current = setInterval(() => {
       setTimeLeft(prevTime => {
@@ -47,7 +50,7 @@ const GamePlayScreen = () => {
 
     return () => clearInterval(timerRef.current!);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [timeLeft]);
 
   const handleInputChange = (text: string) => {
     setValue(text);
